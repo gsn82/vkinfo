@@ -1,5 +1,6 @@
 package quizapp.fandroid.vkinfo;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,27 @@ public class MainActivity extends AppCompatActivity {
     private Button searchButton;
     private TextView result;
 
+    class VKQueryTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected String doInBackground(URL... urls) {
+
+            String response = null;
+            try {
+                // отправляем и получаем запрос с сервера
+                response = getResponseFromURL(urls[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return response;
+        }
+
+        protected void onPostExecute(String response) {
+            result.setText(response);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,16 +56,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // создам сопрас на сервер
                 URL generateURL = generateURL(searchField.getText().toString());
+                // создаем оделный поток , что бы запрос не использовал основной поток
+                new VKQueryTask().execute(generateURL);
 
-                String response = null;
-                try {
-                    // отправляем и получаем запрос с сервера
-                    response = getResponseFromURL(generateURL);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                result.setText(response);
+                //result.setText(generateURL.toString());
             }
         };
 
