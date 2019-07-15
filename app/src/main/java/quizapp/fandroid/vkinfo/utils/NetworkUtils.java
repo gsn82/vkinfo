@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -19,10 +20,10 @@ public class NetworkUtils {
     private static final String ACCESS_TOKEN = "access_token";
     private static final String PARAM_ACCESS_TOKEN_CONST="65178b5665178b5665178b5645657c225f6651765178b56383e702f795ef5420d634aa6";
 
-    public static URL generateURL(String userId) {
+    public static URL generateURL(String userIds) {
         Uri builUri = Uri.parse(VK_API_BASE_URL + VK_USERS_GET)
                 .buildUpon()
-                .appendQueryParameter(PARAM_USER_ID, userId)
+                .appendQueryParameter(PARAM_USER_ID, userIds)
                 .appendQueryParameter(PARAM_VERSION, "5.8")
                 .appendQueryParameter(ACCESS_TOKEN, PARAM_ACCESS_TOKEN_CONST)
                 .build();
@@ -53,7 +54,12 @@ public class NetworkUtils {
             } else {
                 return null;
             }
-        } finally {
+            // это исключение срабатывает , когда нет интернета
+        } catch (UnknownHostException е){
+            return null;
+        }
+
+        finally {
             urlConnection.disconnect();
         }
 

@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingStart="@dimen/vertical_padding"
+    android:paddingTop="@dimen/vertical_padding"
+    android:paddingEnd="@dimen/vertical_padding"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -29,11 +32,39 @@
             android:text="@string/search" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/result"
-        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            android:paddingTop="@dimen/vertical_padding"
+
+            <TextView
+                android:id="@+id/tv_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="@string/result"
+                android:visibility="invisible"
+                />
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/tv_error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/error_message"
+            android:textSize="22sp"
+            android:visibility="invisible" />
+        
+        <ProgressBar
+            android:id="@+id/pb_loading_indicator"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+    </FrameLayout>
 </LinearLayout>
